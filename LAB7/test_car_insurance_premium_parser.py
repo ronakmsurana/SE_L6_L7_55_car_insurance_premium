@@ -3,15 +3,21 @@ from car_insurance_premium_parser import normalize_registration, total_claim_amo
 
 @given(st.text() | st.none())
 def test_normalize_registration_no_crash(s):
-    # To-Do: Using try and except complete this function.
-    pass
+    try:
+        normalize_registration(s)
+    except Exception as e:
+        assert False, f"normalize_registration crashed with: {e}"
 
 @given(st.text() | st.none())
 def test_total_claim_amount_no_crash(s):
-    # To-Do: Using try and except complete this function.
-    pass
+    try:
+        total_claim_amount(s)
+    except Exception as e:
+        assert False, f"total_claim_amount crashed with: {e}"
 
 @given(st.text() | st.none())
 def test_driver_age_no_crash(s):
-    # To-Do: Using try and except complete this function.
-    pass
+    try:
+        driver_age(s)
+    except Exception as e:
+        assert False, f"driver_age crashed with: {e}"
