@@ -1,8 +1,10 @@
 def normalize_registration(plate):
     """
     Removes spaces and dashes from a registration number and upper-cases it.
-    Assumes plate is a non-empty string.
+    Safely handles None, non-strings, and invalid inputs.
     """
+    if plate is None or not isinstance(plate, str):
+        return ""
     plate = plate.strip().upper()
     for ch in [' ', '-', '.']:
         plate = plate.replace(ch, '')
@@ -11,16 +13,36 @@ def normalize_registration(plate):
 def total_claim_amount(text):
     """
     Adds up claim amounts separated by semicolons.
-    Assumes every amount is a whole number.
+    Safely handles None, non-strings, empty elements, and non-integer values.
     """
-    return sum(int(amount) for amount in text.split(';'))
+    if text is None or not isinstance(text, str):
+        return 0
+    total = 0
+    for amount in text.split(';'):
+        amount = amount.strip()
+        if not amount:
+            continue
+        try:
+            total += int(amount)
+        except (ValueError, TypeError):
+            continue
+    return total
 
 def driver_age(dob, current_year=2026):
     """
     Works out the driver's age from a DD/MM/YYYY date of birth.
-    Assumes dob always has three parts separated by '/'.
+    Safely handles None, non-strings, invalid date formats, and non-integer years.
     """
-    return current_year - int(dob.split('/')[2])
+    if dob is None or not isinstance(dob, str):
+        return None
+    parts = dob.strip().split('/')
+    if len(parts) < 3:
+        return None
+    try:
+        birth_year = int(parts[2].strip())
+        return current_year - birth_year
+    except (ValueError, TypeError):
+        return None
 
 def main():
     print("==== Running normalize_registration ====")
